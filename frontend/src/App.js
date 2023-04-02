@@ -1,18 +1,27 @@
-import { Routes, Route } from "react-router-dom";
-import Header from './components/header/Header.js';
+import { Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout.js';
 import About from './pages/About.js';
 import Home from './pages/Home.js';
-import './App.css';
+import BlogPg from './pages/BlogPg.js';
+import Login from './components/login/Login.js';
+import { Box } from '@chakra-ui/react';
 
 function App() {
   return (
-    <>
-      <Header />
+    <Box height="100vh" bg="#fff7ed">
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/about' element={<About />} />
+        <Route path="/" element={<Layout><Home /></Layout>} />
+        <Route path="/about" element={<Layout><About /></Layout>} />
+        <Route
+          path="/blogs/:id"
+          loader={({ params }) => {
+            return params.id;
+          }}
+          element={<Layout><BlogPg /></Layout>}
+        />
+        <Route path="/login" element={<Login />} />
       </Routes>
-    </>
+    </Box>
   );
 }
 

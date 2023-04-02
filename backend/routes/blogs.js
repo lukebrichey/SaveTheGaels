@@ -1,5 +1,5 @@
 import express from 'express';
-import Blog from '../../models/blog';
+import Blog from '../models/blog.js';
 
 const router = express.Router();
 
@@ -7,7 +7,7 @@ const router = express.Router();
 // @description Get all blogs
 // @access Public
 router.get('/blogs', (req, res) => {
-    Blog.get()
+    Blog.find({})
       .then(blogs => res.json(blogs))
       .catch(err => res.status(400).json({ error: 'Unable to render blog posts' }))
 })

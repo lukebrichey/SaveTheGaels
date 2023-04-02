@@ -1,34 +1,50 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './header.css';
+import { Link as RRLink } from 'react-router-dom';
+import { Box, Button, Image } from '@chakra-ui/react';  
 
 // Should take in IsAdmin prop in the future
 
 export default function Header() {
-
-    const [hovered, setHovered] = useState(false);
-
-    function handleHover() {
-        setHovered(!hovered);
-    }
-
     return (
-        <div className='header'>
-            <img 
+        <Box 
+            display="flex" 
+            flexDirection="row" 
+            alignItems="center" 
+            bg="green" 
+            p={4}
+            width="100%" 
+            height="10%" 
+            color="white"
+            borderBottom="3px inset black"
+        >
+            <Image 
                 src={require('./clover.png')} 
-                alt='SaveTheGaels Logo' 
-                className='logo' 
+                alt='SaveTheGaels Logo'
+                boxSize='40px' 
+                className='logo'  
+                ml={10}
             />
-            <Link to="/" className='title'>SaveTheGaels</Link>
-            <Link 
-                to="/about" 
+            <Button 
+                to="/" 
+                as={RRLink} 
+                className='title' 
+                pl={9} 
+                mr="auto" 
+                fontSize="25px"
+            >
+                SaveTheGaels
+            </Button>
+            <Button 
+                to="/about"
+                as={RRLink} 
                 className='nav'
-                onMouseEnter={handleHover}
-                onMouseLeave={handleHover} 
-                style={{ background: hovered ? '#dee0df' : 'none' }}
+                mr={10}
+                p={5}   
+                borderRadius="10px"
+                _hover={{ textDecoration: "underline" }}
+                fontSize="20px"
             >
                 About
-            </Link>
-        </div>
+            </Button>
+        </Box>
     )
 }

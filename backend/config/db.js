@@ -4,6 +4,7 @@ import config from './default.json' assert { type: "json" };
 const db = config.mongoURI;
 
 const connectDB = async () => {
+    mongoose.set('strictQuery', false);
     try {
       await mongoose.connect(db);
   
