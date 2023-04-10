@@ -1,12 +1,19 @@
 // theme.js
-let theme = {
+import { extendTheme } from '@chakra-ui/react';
+
+const theme = extendTheme({
     colors: {
       transparent: 'transparent',
-      black: '#000',
-      white: '#fff',
       gray: '#E2E8F0',
       green: '#22543D',
     },
-  }
+    components: {
+      Button: {
+        baseStyle: {
+          fontWeight: 'normal',
+        }
+      }
+    },
+  });
 
 export default theme;

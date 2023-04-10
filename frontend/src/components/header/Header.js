@@ -1,12 +1,12 @@
 import { Link as RRLink } from 'react-router-dom';
-import { Box, Button, Image } from '@chakra-ui/react';  
+import { Flex, Button, Image } from '@chakra-ui/react';  
 
 // Should take in IsAdmin prop in the future
 
 export default function Header() {
     return (
-        <Box 
-            display="flex" 
+        // Repalce Box with Flex 
+        <Flex 
             flexDirection="row" 
             alignItems="center" 
             bg="green" 
@@ -20,31 +20,31 @@ export default function Header() {
                 src={require('./clover.png')} 
                 alt='SaveTheGaels Logo'
                 boxSize='40px' 
-                className='logo'  
-                ml={10}
+                ml={5}
+                mb={1}
             />
             <Button 
                 to="/" 
                 as={RRLink} 
-                className='title' 
-                pl={9} 
-                mr="auto" 
+                pl={1} 
+                mr="auto"
                 fontSize="25px"
             >
                 SaveTheGaels
             </Button>
-            <Button 
+            <Button     
                 to="/about"
-                as={RRLink} 
-                className='nav'
-                mr={10}
-                p={5}   
+                as={RRLink}
+                variant="ghost" 
+                mr={5}
+                mt={0.9}
+                p={1}   
                 borderRadius="10px"
-                _hover={{ textDecoration: "underline" }}
                 fontSize="20px"
+                _hover={{textDecoration: 'underline'}}
             >
                 About
             </Button>
-        </Box>
+        </Flex>
     )
 }

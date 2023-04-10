@@ -6,9 +6,9 @@ import Header from './header/Header';
 
 function Layout({ children }) {
   return (
-    <Flex direction="column" minHeight="calc(100vh - 10%)">
+    <Flex direction="column" minHeight="100vh">
       <Header />
-      <Box flex="1" paddingTop="2rem">
+      <Box flex="1" paddingTop="2rem" min>
         {children}
       </Box>
       <Footer />

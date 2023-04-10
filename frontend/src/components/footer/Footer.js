@@ -13,20 +13,17 @@ function Footer() {
   return (
     <Box 
       bg="green" 
-      pt="8"
-      pb="4"
+      pt={8}
+      pb={4}
+      mt={10}
       color="white" 
-      position="absolute"
-      left="0"
-      right="0"
-      bottom="0"
       width="100%"
     >
       <VStack spacing="2">
         <Text fontSize="sm">
           Made by Luke Richey
         </Text>
-        <HStack spacing="4">
+        <HStack spacing="1">
           <Link href="https://twitter.com/LukeRichey3" isExternal>
             <IconButton
               aria-label="Twitter"
@@ -37,7 +34,7 @@ function Footer() {
                 padding: '2px',
                 fontSize: '25px',
               }}
-              colorScheme="twitter"
+              colorScheme="gray"
             />
           </Link>
           <Link href="https://github.com/lukebrichey" isExternal>
