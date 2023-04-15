@@ -17,7 +17,7 @@ export default function Home() {
     
     return (
         <VStack
-            spacing={10}        
+            spacing={20}        
         >
             {
                 // TODO: Make blogs render in order of most recent
