@@ -1,0 +1,4 @@
+.blogPg {
+    display: flex;
+    flex-direction: column;
+}
