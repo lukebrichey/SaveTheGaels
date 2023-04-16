@@ -8,7 +8,7 @@ function Layout({ children }) {
   return (
     <Flex direction="column" minHeight="100vh">
       <Header />
-      <Box flex="1" paddingTop="2rem" min>
+      <Box flex="1" paddingTop="2rem" bgColor="#fff7ed" pb={10}>
         {children}
       </Box>
       <Footer />

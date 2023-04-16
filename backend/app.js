@@ -2,7 +2,7 @@ import express from "express"
 import connectDB from './config/db.js'
 import cors from 'cors';
 import passport from 'passport';
-;import { Strategy as LocalStrategy } from 'passport-local';
+import './config/passportConfig.js';
 
 
 // Connect to DB
@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cors());
 
 // Define routes
-import routes from './routes/blogs.js'
+import routes from './routes/routes.js'
 
 app.use('/api', routes);
 

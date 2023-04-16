@@ -32,10 +32,23 @@ export default function Header() {
             >
                 SaveTheGaels
             </Button>
+            
+            <Button
+                to="/create"
+                as={RRLink}
+                mr={5}
+                mt={0.9}
+                p={1}
+                borderRadius="10px"
+                fontSize="20px"
+                _hover={{textDecoration: 'underline'}}
+            >
+                Create
+            </Button>
+
             <Button     
                 to="/about"
                 as={RRLink}
-                variant="ghost" 
                 mr={5}
                 mt={0.9}
                 p={1}   
@@ -45,6 +58,7 @@ export default function Header() {
             >
                 About
             </Button>
+        
         </Flex>
     )
 }

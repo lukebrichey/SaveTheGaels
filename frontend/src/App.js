@@ -3,6 +3,7 @@ import Layout from './components/Layout.js';
 import About from './pages/About.js';
 import Home from './pages/Home.js';
 import BlogPg from './pages/BlogPg.js';
+import Create from './pages/Create.js';
 import { Box } from '@chakra-ui/react';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           }}
           element={<Layout><BlogPg /></Layout>}
         />
+        <Route path="/create" element={<Layout><Create /></Layout>} />
       </Routes>
     </Box>
   );

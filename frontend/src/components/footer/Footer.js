@@ -26,7 +26,6 @@ function Footer() {
       bg="green" 
       pt={8}
       pb={4}
-      mt={10}
       color="white" 
       width="100%"
     >
