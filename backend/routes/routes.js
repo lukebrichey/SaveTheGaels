@@ -17,7 +17,7 @@ router.get('/blogs', (req, res) => {
 // @description Get the latest blog
 // @access Public
 router.get('/blogs/latest', (req, res) => {
-    Blog.findOne({}).sort({ id: -1 })
+    Blog.findOne({}).sort({ num: -1 })
       .then(blog => res.json(blog))
       .catch(err => res.status(400).json({ error: 'Unable to render latest blog post' }))
 })

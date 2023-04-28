@@ -12,9 +12,9 @@ export default function Card({ blog }) {
 
     return (
         <Link  
-        to={{ pathname: `/blogs/${blog.id}` }}
+        to={{ pathname: `/blogs/${blog._id}` }}
         state= {{ blog }}
-        key={blog.id}
+        key={blog._id}
         >
             <ChakraCard 
                 bg='white'
@@ -25,7 +25,7 @@ export default function Card({ blog }) {
             >
                 <CardHeader ml={6} width="100%">
                     <Flex align='center' width="100%">
-                        <Text mr={4} >#{ blog.id }</Text>
+                        <Text mr={4} >#{ blog.num }</Text>
                         <Text fontSize="20px" mr="auto">{ blog.title }</Text>
                         <Text mr={10}>{ blog.date }</Text>
                     </Flex>

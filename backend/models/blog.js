@@ -8,7 +8,7 @@ const blogSchema = new mongoose.Schema({
     tags: Array,
     date: { type: String, default: () => new Date(Date.now()).toLocaleDateString() },
     hidden: { type: Boolean, default: false },
-    id: Number
+    num: Number
 });
 
 const Blog = mongoose.model("Blog", blogSchema);

@@ -19,7 +19,7 @@ export default function Home() {
         <VStack spacing={10}>
           {
             blogs
-              .sort((a, b) => b.id - a.id)
+              .sort((a, b) => b.num - a.num)
               .map((blog) => {
                 if (blog.hidden) {
                   return null;
@@ -27,7 +27,7 @@ export default function Home() {
       
                 return (
                   <Card 
-                    key={blog.id} 
+                    key={blog.num} 
                     blog={blog}
                   />
                 )

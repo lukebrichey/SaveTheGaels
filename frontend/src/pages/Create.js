@@ -16,7 +16,7 @@ import Blog from '../components/blog/Blog';
 
 export default function Create() {
   const [formValues, setFormValues] = useState({
-    id: 0,
+    num: 0,
     title: '',
     author: '',
     tags: '',
@@ -31,27 +31,26 @@ export default function Create() {
 
   // Incrementing the number of blog
   useEffect(() => {
-    const fetchLatestBlogId = async () => {
+    const fetchLatestBlogNumber = async () => {
       try {
         const response = await fetch('http://localhost:5000/api/blogs/latest');
-        if (!response.ok) {
-          throw new Error(`API request failed with status ${response.status}`);
-        }
         const latestBlog = await response.json();
-  
-        // If there are no blogs in the database, set the initial ID to 1.
+
         if (latestBlog) {
-          setFormValues((prevState) => ({ ...prevState, id: latestBlog.id + 1 }));
+          setFormValues((prevState) => ({ ...prevState, num: latestBlog.num + 1 }));
         } else {
-          setFormValues((prevState) => ({ ...prevState, id: 1 }));
+          setFormValues((prevState) => ({ ...prevState, num: 1 }));
         }
       } catch (error) {
-        console.error('Error fetching latest blog ID:', error);
+        console.error('Error fetching latest blog number:', error);
+        setFormValues((prevState) => ({ ...prevState, num: 1 }));
       }
     };
-  
-    fetchLatestBlogId();
+
+    fetchLatestBlogNumber();
   }, []);
+
+
   
   // Handle form values
   const handleChange = (e) => {

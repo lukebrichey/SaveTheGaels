@@ -27,6 +27,9 @@ export default function Blog({ blog }) {
       <Text fontSize="sm" color="gray.500" marginBottom="2">
         {blog.date}
       </Text>
+      <Text fontSize="md" color="gray.500" marginBottom="2">
+        By {blog.author}
+      </Text>
       <VStack spacing={1} alignItems="flex-start">
         {bodyLines.map((line, index) => (
           <>
