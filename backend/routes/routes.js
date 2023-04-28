@@ -54,7 +54,7 @@ router.delete('/admin/:id', (req, res) => {
       .catch(err => res.status(400).json({ error: 'Unable to delete blog' }));
 })
 
-// @route GET api/check-admin-status
+// @route GET api/isAdmin
 // @description Check if the user is logged in
 // @access Private (needs to be logged in)
 router.get('/isAdmin', (req, res) => {
@@ -65,10 +65,10 @@ router.get('/isAdmin', (req, res) => {
   }
 });
 
-// @route POST api/login/password
+// @route POST api/login/
 // @description Login with username and password
 // @access Admin
-router.post('/login/password', (req, res, next) => {
+router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       return next(err);
@@ -92,8 +92,8 @@ router.post('/login/password', (req, res, next) => {
       // Log success message to the console
       console.log(`User "${user.username}" successfully logged in.`);
 
-      // Redirect to the home page on success
-      return res.redirect('/');
+      // Return success JSON object
+      return res.json({ message: 'Login successful', userId: user._id });
     });
   })(req, res, next);
 

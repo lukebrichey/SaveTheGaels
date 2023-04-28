@@ -15,13 +15,28 @@ import {
 } from "@chakra-ui/react";
 
 function LoginModal({ isOpen, onClose }) {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Email:", email, "Password:", password);
-    // Handle login logic here
+    console.log("Username:", username, "Password:", password);
+    
+    const response = await fetch("http://localhost:5000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        },
+      body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        console.log(await response.json());
+        console.log("Login successful");
+      } else {
+        console.log("Login failed");
+      }
+
     onClose();
   };
 
@@ -45,12 +60,12 @@ function LoginModal({ isOpen, onClose }) {
         <ModalCloseButton ml="auto" mt={2} />
         <Box as="form" onSubmit={handleSubmit}>
           <ModalBody>
-            <FormControl id="email" mb={4}>
-              <FormLabel>Email address</FormLabel>
+            <FormControl id="username" mb={4}>
+              <FormLabel>Username</FormLabel>
               <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
                 borderColor="gray.300"
                 focusBorderColor="blue.500"
