@@ -85,8 +85,6 @@ function LoginModal({ isOpen, onClose }) {
             <Button
               variant="outline"
               onClick={onClose}
-              borderColor="gray.300"
-              color="gray.600"
               _hover={{ borderColor: "gray.400", color: "gray.800" }}
               _active={{ borderColor: "gray.500", color: "gray.900" }}
             >

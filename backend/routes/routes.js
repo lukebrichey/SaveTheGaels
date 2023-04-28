@@ -13,12 +13,22 @@ router.get('/blogs', (req, res) => {
       .catch(err => res.status(400).json({ error: 'Unable to render blog posts' }))
 })
 
+// @route GET api/blogs/latest
+// @description Get the latest blog
+// @access Public
+router.get('/blogs/latest', (req, res) => {
+    Blog.findOne({}).sort({ id: -1 })
+      .then(blog => res.json(blog))
+      .catch(err => res.status(400).json({ error: 'Unable to render latest blog post' }))
+})
+
 // TODO: Need to add access control
 
 // @route POST api/admin
 // @description Create a new blog
 // @access Admin
 router.post('/admin', (req, res) => {
+    console.log(req.body)
     Blog.create(req.body)
       .then(blog => res.json({ msg: 'Blog added successfully' }))
       .catch(err => res.status(400).json({ error: 'Unable to add blog' }));

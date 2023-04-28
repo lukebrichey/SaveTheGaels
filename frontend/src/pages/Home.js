@@ -16,20 +16,24 @@ export default function Home() {
     }, []);
     
     return (
-        <VStack
-            spacing={10}        
-        >
-            {
-                // TODO: Make blogs render in order of most recent
-                blogs.map((blog) => {
-                    return (
-                        <Card 
-                                key={blog.id} 
-                                blog={blog}
-                            />
-                    )
-                })
-            }
+        <VStack spacing={10}>
+          {
+            blogs
+              .sort((a, b) => b.id - a.id)
+              .map((blog) => {
+                if (blog.hidden) {
+                  return null;
+                }
+      
+                return (
+                  <Card 
+                    key={blog.id} 
+                    blog={blog}
+                  />
+                )
+              })
+          }
         </VStack>
-    )
+    );
+      
 };
