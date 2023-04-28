@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAdmin } from "../../context/AdminContext.js";
 import {
   Box,
   Modal,
@@ -18,6 +19,8 @@ function LoginModal({ isOpen, onClose }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const { setIsAdmin } = useAdmin();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Username:", username, "Password:", password);
@@ -33,6 +36,7 @@ function LoginModal({ isOpen, onClose }) {
       if (response.ok) {
         console.log(await response.json());
         console.log("Login successful");
+        setIsAdmin(true);
       } else {
         console.log("Login failed");
       }

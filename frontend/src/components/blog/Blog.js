@@ -1,4 +1,5 @@
 import { Box, Text, Tag, HStack, VStack } from '@chakra-ui/react';
+import React from 'react';
 
 export default function Blog({ blog }) {
   const bodyLines = blog.body.split('\n');
@@ -32,12 +33,12 @@ export default function Blog({ blog }) {
       </Text>
       <VStack spacing={1} alignItems="flex-start">
         {bodyLines.map((line, index) => (
-          <>
+          <React.Fragment key={index}>
             <Text key={index} fontSize="md" lineHeight="tall">
               {line}
             </Text>
             {index < bodyLines.length - 1 && <br />}
-          </>
+          </React.Fragment>
         ))}
       </VStack>
     </Box>
