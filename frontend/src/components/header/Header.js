@@ -1,9 +1,13 @@
 import { Link as RRLink } from 'react-router-dom';
 import { Flex, Button, Image } from '@chakra-ui/react';  
+import { useAdmin } from '../../context/AdminContext.js';
 
 // Should take in IsAdmin prop in the future
 
 export default function Header() {
+
+    const { isAdmin } = useAdmin();
+
     return (
         // Repalce Box with Flex 
         <Flex 
@@ -33,18 +37,20 @@ export default function Header() {
                 SaveTheGaels
             </Button>
             
-            <Button
-                to="/create"
-                as={RRLink}
-                mr={5}
-                mt={0.9}
-                p={1}
-                borderRadius="10px"
-                fontSize="20px"
-                _hover={{textDecoration: 'underline'}}
-            >
-                Create
-            </Button>
+            { isAdmin && (
+                <Button
+                    to="/create"
+                    as={RRLink}
+                    mr={5}
+                    mt={0.9}
+                    p={1}
+                    borderRadius="10px"
+                    fontSize="20px"
+                    _hover={{textDecoration: 'underline'}}
+                >
+                    Create
+                </Button>
+            )}
 
             <Button     
                 to="/about"

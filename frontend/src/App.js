@@ -10,14 +10,13 @@ import { useAdmin } from './context/AdminContext.js';
 
 function App() {
 
-  const { setIsAdmin } = useAdmin();
+  const { isAdmin, setIsAdmin } = useAdmin();
 
   useEffect(() => {
     // Fetch the admin status from the server and update the state
     const checkAdminStatus = async () => {
       const response = await fetch('http://localhost:5000/api/isAdmin');
       const { isAdmin } = await response.json();
-      console.log(isAdmin)
       setIsAdmin(isAdmin);
     };
 
@@ -36,7 +35,8 @@ function App() {
           }}
           element={<Layout><BlogPg /></Layout>}
         />
-        <Route path="/create" element={<Layout><Create /></Layout>} />
+
+        {isAdmin && <Route path="/create" element={<Layout><Create /></Layout>} />}
       </Routes>
     </Box>
   );

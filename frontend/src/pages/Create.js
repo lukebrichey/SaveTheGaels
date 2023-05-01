@@ -88,6 +88,7 @@ export default function Create() {
 
   const blogData = {
     title: formValues.title,
+    author: formValues.author,
     tags: formValues.tags.split(',').map(tag => tag.trim()),
     date: new Date().toLocaleDateString(),
     body: formValues.body,
@@ -103,8 +104,8 @@ export default function Create() {
             borderRadius="lg"
             border="1px solid"
             borderColor="gray.200"
-            minWidth={500}
-            minHeight={600}
+            minWidth={700}
+            minHeight={800}
           >
             <FormControl>
               <FormLabel htmlFor="title">Title</FormLabel>

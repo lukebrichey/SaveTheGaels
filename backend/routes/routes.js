@@ -48,11 +48,25 @@ router.put('/admin/:id', (req, res) => {
 // @route DELETE api/admin
 // @description Delete a blog by number
 // @access Admin
-router.delete('/admin/:id', (req, res) => {
-    Blog.findByIdAndDelete(req.params.id, req.body) 
-      .then(blog => res.json({ msg: 'Blog deleted successfully' }))
-      .catch(err => res.status(400).json({ error: 'Unable to delete blog' }));
-})
+router.delete('/admin/:id', async (req, res) => {
+  try {
+      const blogToDelete = await Blog.findById(req.params.id);
+      if (!blogToDelete) {
+          return res.status(404).json({ error: 'Blog not found' });
+      }
+
+      const deletedBlogNum = blogToDelete.num;
+      await blogToDelete.delete();
+
+      // Decrement the numbers of all blogs with numbers greater than the deleted blog's number
+      await Blog.updateMany({ num: { $gt: deletedBlogNum } }, { $inc: { num: -1 } });
+
+      res.json({ msg: 'Blog deleted successfully' });
+  } catch (err) {
+      res.status(400).json({ error: 'Unable to delete blog' });
+  }
+});
+
 
 // @route GET api/isAdmin
 // @description Check if the user is logged in
@@ -99,6 +113,19 @@ router.post('/login', (req, res, next) => {
 
 });
 
+// @route GET api/logout
+// @description Logout the user
+// @access Private (needs to be logged in)
+router.get('/logout', (req, res) => {
+  // Log the user out
+  if (req.isAuthenticated()) {
+    req.logout();
+    req.session.destroy();
+    res.json({ message: 'Logout successful' });
+  } else {
+    res.json({ message: 'No user to log out' });
+  }
+});
 
 
 export default router;
