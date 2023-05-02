@@ -22,7 +22,10 @@ export default function Card({ blog, onDelete }) {
     };
 
     // Edit blog
-    const editBlog = async () => {}
+    const handleEdit = (e) => {
+        e.stopPropagation();
+        navigate(`/edit/${blog._id}`, { state: { blog } });
+      };      
 
     return (
         <ChakraCard 
@@ -32,6 +35,12 @@ export default function Card({ blog, onDelete }) {
             borderRadius="10px"
             border='1px solid black'
             onClick={handleClick}
+            onMouseEnter={
+                (e) => {
+                    // Change the cursor to a pointer
+                    e.currentTarget.style.cursor = 'pointer';
+                }
+            }
         >
             <CardHeader ml={6} width="100%">
                 <Flex align='center' width="100%">
@@ -40,13 +49,15 @@ export default function Card({ blog, onDelete }) {
                     <Text mr={10} >{ blog.date }</Text>
                 </Flex>
                 <Flex align='center' justifyContent='spacebetween'>
-                        {
-                            blog.tags.map((tag, index) => {
-                                return  <Tag key={index} size="sm" m={1} colorScheme="blue">
-                                            {tag}
-                                        </Tag>
-                            })
-                        }
+                    {
+                        blog.tags.filter(tag => tag.trim() !== "").map((tag, index) => {
+                        return (
+                            <Tag key={index} size="sm" m={1} colorScheme="blue">
+                            {tag}
+                            </Tag>
+                        );
+                        })
+                    }
                 </Flex>
             </CardHeader>
             <CardBody width="100%" ml={6} mr={10}>
@@ -61,7 +72,8 @@ export default function Card({ blog, onDelete }) {
                                 size="sm"
                                 colorScheme='blackAlpha'
                                 borderWidth={1}
-                                borderColor='blackAlpha.700' 
+                                borderColor='blackAlpha.700'
+                                onClick={handleEdit} 
                             />
                             <IconButton
                                 icon={<AiFillDelete />}

@@ -1,4 +1,4 @@
-import { Box, Text, Tag, HStack, VStack } from '@chakra-ui/react';
+import { Box, Text, Tag, HStack, VStack, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 export default function Blog({ blog }) {
@@ -15,19 +15,23 @@ export default function Blog({ blog }) {
       border="1px solid"
       borderColor="gray.200"
     >
-      <Text fontSize="3xl" marginBottom="2">
-        {blog.title}
-      </Text>
-      <HStack marginBottom="4" spacing={2}>
-        {blog.tags.map((tag, index) => (
-          <Tag key={index} size="sm" colorScheme="blue">
-            {tag}
-          </Tag>
-        ))}
-      </HStack>
-      <Text fontSize="sm" color="gray.500" marginBottom="2">
-        {blog.date}
-      </Text>
+      <Flex justifyContent="space-between"> 
+        <Text fontSize="3xl" marginBottom="2">
+          {blog.title}
+        </Text>
+        <Text fontSize="sm" color="gray.500" marginBottom="2">
+          {blog.date}
+        </Text>
+      </Flex>
+      {blog.tags.length > 0 && 
+        <HStack marginBottom="4" spacing={2}>
+          {blog.tags.filter(tag => tag.trim() !== "").map((tag, index) => (
+            <Tag key={index} size="sm" colorScheme="blue">
+              {tag}
+            </Tag>
+          ))}
+        </HStack> 
+      }
       <Text fontSize="md" color="gray.500" marginBottom="2">
         By {blog.author}
       </Text>

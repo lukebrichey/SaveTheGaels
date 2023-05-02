@@ -17,18 +17,34 @@ router.get('/blogs', (req, res) => {
 // @description Get the latest blog
 // @access Public
 router.get('/blogs/latest', (req, res) => {
-    Blog.findOne({}).sort({ num: -1 })
-      .then(blog => res.json(blog))
-      .catch(err => res.status(400).json({ error: 'Unable to render latest blog post' }))
-})
+  Blog.findOne().sort({ num: -1 })
+      .then(blog => {
+          if (blog) {
+              res.json(blog);
+          } else {
+              res.json({ num: 0 }); // Return an empty blog object with num set to 0
+          }
+      })
+      .catch(err => {
+          console.error('Error in /blogs/latest:', err);
+          res.status(400).json({ error: `Unable to render latest blog post. Error: ${err.message}` });
+      });
+});
 
-// TODO: Need to add access control
+
+// @route GET api/blogs/:id
+// @description Get a single blog by id
+// @access Public
+router.get('/blogs/:id', (req, res) => {
+    Blog.findById(req.params.id)
+      .then(blog => res.json(blog))
+      .catch(err => res.status(400).json({ error: 'Unable to render blog post, woah' }))
+})
 
 // @route POST api/admin
 // @description Create a new blog
 // @access Admin
 router.post('/admin', (req, res) => {
-    console.log(req.body)
     Blog.create(req.body)
       .then(blog => res.json({ msg: 'Blog added successfully' }))
       .catch(err => res.status(400).json({ error: 'Unable to add blog' }));
@@ -37,13 +53,11 @@ router.post('/admin', (req, res) => {
 // @route PUT api/admin
 // @description Update a previous blog
 // @access Admin
-// TODO: determine how id will work with front end (maybe just add a number that
-// auto increments, keeps track of blogs)
 router.put('/admin/:id', (req, res) => {
-    Blog.findByIdAndUpdate(req.params.id, req.body)
-      .then(blog => res.json({ msg: 'Blog updated successfully' }))
-      .catch(err => res.status(400).json({ error: 'Unable to update blog' }));
-})
+  Blog.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then((updatedBlog) => res.json(updatedBlog))
+    .catch((err) => res.status(400).json({ error: 'Unable to update blog' }));
+});
 
 // @route DELETE api/admin
 // @description Delete a blog by number
@@ -67,7 +81,6 @@ router.delete('/admin/:id', async (req, res) => {
   }
 });
 
-
 // @route GET api/isAdmin
 // @description Check if the user is logged in
 // @access Private (needs to be logged in)
@@ -81,7 +94,7 @@ router.get('/isAdmin', (req, res) => {
 
 // @route POST api/login/
 // @description Login with username and password
-// @access Admin
+// @access Public
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {

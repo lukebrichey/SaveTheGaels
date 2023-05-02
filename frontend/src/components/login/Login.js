@@ -23,7 +23,6 @@ function LoginModal({ isOpen, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Username:", username, "Password:", password);
     
     const response = await fetch("http://localhost:5000/api/login", {
       method: "POST",

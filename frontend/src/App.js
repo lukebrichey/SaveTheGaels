@@ -5,6 +5,7 @@ import About from './pages/About.js';
 import Home from './pages/Home.js';
 import BlogPg from './pages/BlogPg.js';
 import Create from './pages/Create.js';
+import Edit from './pages/Edit.js';
 import { Box } from '@chakra-ui/react';
 import { useAdmin } from './context/AdminContext.js';
 
@@ -37,6 +38,8 @@ function App() {
         />
 
         {isAdmin && <Route path="/create" element={<Layout><Create /></Layout>} />}
+        {isAdmin && <Route path="/edit/:id" element={<Layout><Edit /></Layout>} />}
+
       </Routes>
     </Box>
   );

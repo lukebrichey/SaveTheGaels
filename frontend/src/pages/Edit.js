@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { 
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import {
   Box,
   VStack,
   FormControl,
@@ -8,96 +8,79 @@ import {
   FormHelperText,
   Input,
   Button,
-  HStack,
   Textarea,
   Checkbox
 } from '@chakra-ui/react';
-import Blog from '../components/blog/Blog';
 
-export default function Create() {
+export default function Edit() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const blog = location.state.blog;
+
   const [formValues, setFormValues] = useState({
-    num: 0,
-    title: '',
-    author: '',
-    tags: '',
-    description: '',
-    hidden: true,
-    body: '',
+    num: blog.num,
+    title: blog.title,
+    author: blog.author,
+    tags: blog.tags.join(', '),
+    description: blog.description,
+    hidden: blog.hidden,
+    body: blog.body,
   });
 
-  const [preview, setPreview] = useState(false);
-
-  const navigate = useNavigate();
-
-  // Incrementing the number of blog
   useEffect(() => {
-    const fetchLatestBlogNumber = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/blogs/latest');
-        const latestBlog = await response.json();
-    
-        if (response.ok && latestBlog && latestBlog.num !== undefined) {
-          setFormValues((prevState) => ({ ...prevState, num: latestBlog.num + 1 }));
-        } else {
-          setFormValues((prevState) => ({ ...prevState, num: 1 }));
+    // Fetch the blog if it wasn't passed through the state
+    if (!blog) {
+      // Fetch the blog data by id and set the initial values
+        const fetchBlog = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/blogs/${id}`);
+                const blog = await response.json();
+                setFormValues({
+                    num: blog.num,
+                    title: blog.title,
+                    author: blog.author,
+                    tags: blog.tags.join(', '),
+                    description: blog.description,
+                    hidden: blog.hidden,
+                    body: blog.body,
+                });
+            } catch (error) {
+                console.log(error)
+            }
         }
-      } catch (error) {
-        console.error('Error fetching latest blog number:', error);
-        setFormValues((prevState) => ({ ...prevState, num: 1 }));
-      }
-    };    
+        fetchBlog();
+    }
+  }, [id, blog]);
 
-    fetchLatestBlogNumber();
-  }, []);
-
-
-  
-  // Handle form values
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.id]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const response = await fetch('http://localhost:5000/api/admin', {
-      method: 'POST',
+  
+    const response = await fetch(`http://localhost:5000/api/admin/${id}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ ...formValues, tags: formValues.tags.split(',').map(tag => tag.trim()) }),
     });
-
+  
     if (response.ok) {
-      console.log(await response.json());
-      // redirect to home page
-      navigate('/');
-
+      const updatedBlog = await response.json();
+      navigate(`/blogs/${updatedBlog._id}`, { state: { blog: updatedBlog } });
     } else {
       console.error(await response.json());
     }
   };
-
-  const handlePreview = () => {
-    setPreview(!preview);
-  };
-
-  const handleHidden = (e) => {
-    setFormValues({ ...formValues, hidden: !e.target.checked });
-  };
-
-  const blogData = {
-    title: formValues.title,
-    author: formValues.author,
-    tags: formValues.tags.split(',').map(tag => tag.trim()),
-    date: new Date().toLocaleDateString(),
-    body: formValues.body,
-  };
+  
 
   return (
-    <VStack spacing={4} align="center">
-      {!preview ? (
-        <form onSubmit={handleSubmit}>
+    <Box>
+      <form onSubmit={handleSubmit}>
+        <VStack spacing={4} align="center">
           <Box
             bg="white"
             padding={6}
@@ -161,33 +144,20 @@ export default function Create() {
               <Checkbox 
                 id="hidden"
                 mt={2}
-                onChange={handleHidden} 
-                value={formValues.hidden}
+                isChecked={!formValues.hidden}
+                onChange={(e) => setFormValues({ ...formValues, hidden: !e.target.checked })}
                 borderColor='black'
               >
                 Public
               </Checkbox>
-
             </FormControl>
           </Box>
 
-          <HStack spacing={4} mt={6} >
-            <Button colorScheme="blue" type="submit" ml="auto">
-              Submit
-            </Button>
-            <Button colorScheme="blackAlpha" onClick={handlePreview}>
-              Preview
-            </Button>
-          </HStack>
-        </form>
-      ) : (
-        <>
-            <Blog blog={blogData} />
-            <Button mt={4} colorScheme="blackAlpha" onClick={handlePreview}>
-                Back to Edit
-            </Button>
-        </>
-      )}
-    </VStack>
+          <Button colorScheme="blue" type="submit" mt={6}>
+            Save Changes
+          </Button>
+        </VStack>
+      </form>
+    </Box>
   );
 }
