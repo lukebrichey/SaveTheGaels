@@ -34,7 +34,7 @@ export default function Edit() {
       // Fetch the blog data by id and set the initial values
         const fetchBlog = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/blogs/${id}`);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/blogs/${id}`);
                 const blog = await response.json();
                 setFormValues({
                     num: blog.num,

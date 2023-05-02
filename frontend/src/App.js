@@ -16,7 +16,7 @@ function App() {
   useEffect(() => {
     // Fetch the admin status from the server and update the state
     const checkAdminStatus = async () => {
-      const response = await fetch('http://localhost:5000/api/isAdmin');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/isAdmin`);
       const { isAdmin } = await response.json();
       setIsAdmin(isAdmin);
     };

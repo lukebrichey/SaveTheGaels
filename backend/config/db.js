@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
-import config from './default.json' assert { type: "json" };
+import dotenv from 'dotenv';
 
-const db = config.mongoURI;
+dotenv.config();
+
+const db = process.env.DATABASE_URI || process.env.DEVELOPMENT_DATABASE_URI;
 
 const connectDB = async () => {
     mongoose.set('strictQuery', false);

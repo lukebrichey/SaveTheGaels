@@ -4,13 +4,15 @@ import connectDB from './config/db.js'
 import cors from 'cors';
 import passport from 'passport';
 import './config/passportConfig.js';
-import config from './config/default.json' assert { type: "json" };
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Connect to DB
 connectDB();   
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cors());
@@ -18,7 +20,7 @@ app.use(cors());
 // Express session
 app.set('trust proxy', 1) // trust first proxy
 
-const sessionSecret = config.sessionSecret;
+const sessionSecret = process.env.SESSION_SECRET || process.env.DEVELOPMENT_SESSION_SECRET;
 
 app.use(session({
   secret: sessionSecret,

@@ -9,7 +9,12 @@ export default function Home() {
     const { isAdmin } = useAdmin();
 
     const fetchBlogs = async () => {
-      const response = await fetch('http://localhost:5000/api/blogs');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/blogs`, {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+        },
+      });
       const blogs = await response.json();
       setBlogs(blogs);
     };
@@ -19,8 +24,12 @@ export default function Home() {
     }, []);
 
     const handleDelete = async (id) => {
-      const response = await fetch(`http://localhost:5000/api/admin/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/admin/${id}`, {
         method: 'DELETE',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+        },
       });
       if (response.ok) {
         console.log('Blog deleted successfully');

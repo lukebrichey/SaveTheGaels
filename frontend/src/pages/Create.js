@@ -33,7 +33,7 @@ export default function Create() {
   useEffect(() => {
     const fetchLatestBlogNumber = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/blogs/latest');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/blogs/latest`);
         const latestBlog = await response.json();
     
         if (response.ok && latestBlog && latestBlog.num !== undefined) {
@@ -60,7 +60,7 @@ export default function Create() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch('http://localhost:5000/api/admin', {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/admin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
