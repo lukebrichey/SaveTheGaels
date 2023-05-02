@@ -28,13 +28,16 @@ export default function Edit() {
     body: blog.body,
   });
 
+  const api_url = process.env.REACT_APP_API_URL || process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:5000/api'
+
+
   useEffect(() => {
     // Fetch the blog if it wasn't passed through the state
     if (!blog) {
       // Fetch the blog data by id and set the initial values
         const fetchBlog = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/blogs/${id}`);
+                const response = await fetch(`${api_url}/blogs/${id}`);
                 const blog = await response.json();
                 setFormValues({
                     num: blog.num,
@@ -51,7 +54,7 @@ export default function Edit() {
         }
         fetchBlog();
     }
-  }, [id, blog]);
+  }, [id, blog, api_url]);
 
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.id]: e.target.value });
@@ -60,7 +63,7 @@ export default function Edit() {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    const response = await fetch(`http://localhost:5000/api/admin/${id}`, {
+    const response = await fetch(`${api_url}/admin/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

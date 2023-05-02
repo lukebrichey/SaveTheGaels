@@ -8,8 +8,11 @@ export default function Home() {
   
     const { isAdmin } = useAdmin();
 
+    const api_url = process.env.REACT_APP_API_URL || process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:5000/api'
+
+
     const fetchBlogs = async () => {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/blogs`, {
+      const response = await fetch(`${api_url}/blogs`, {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -21,10 +24,10 @@ export default function Home() {
 
     useEffect(() => {
       fetchBlogs();
-    }, []);
+    });
 
     const handleDelete = async (id) => {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/admin/${id}`, {
+      const response = await fetch(`${api_url}/admin/${id}`, {
         method: 'DELETE',
         headers: {
           'Cache-Control': 'no-cache',

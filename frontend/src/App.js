@@ -13,16 +13,19 @@ function App() {
 
   const { isAdmin, setIsAdmin } = useAdmin();
 
+  const api_url = process.env.REACT_APP_API_URL || process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:5000/api';
+
+
   useEffect(() => {
     // Fetch the admin status from the server and update the state
     const checkAdminStatus = async () => {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/isAdmin`);
+      const response = await fetch(`${api_url}/isAdmin`);
       const { isAdmin } = await response.json();
       setIsAdmin(isAdmin);
     };
 
     checkAdminStatus();
-  }, [setIsAdmin]);
+  }, [setIsAdmin, api_url]);
 
   return (
     <Box height="100vh" bg="#fff7ed">

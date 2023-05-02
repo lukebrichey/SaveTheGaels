@@ -29,11 +29,14 @@ export default function Create() {
 
   const navigate = useNavigate();
 
+  const api_url = process.env.REACT_APP_API_URL || process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:5000/api'
+
+
   // Incrementing the number of blog
   useEffect(() => {
     const fetchLatestBlogNumber = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/blogs/latest`);
+        const response = await fetch(`${api_url}/blogs/latest`);
         const latestBlog = await response.json();
     
         if (response.ok && latestBlog && latestBlog.num !== undefined) {
@@ -48,7 +51,7 @@ export default function Create() {
     };    
 
     fetchLatestBlogNumber();
-  }, []);
+  }, [api_url]);
 
 
   
@@ -60,7 +63,7 @@ export default function Create() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/admin`, {
+    const response = await fetch(`${api_url}/admin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
