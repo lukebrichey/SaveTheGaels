@@ -5,8 +5,10 @@ import cors from 'cors';
 import passport from 'passport';
 import './config/passportConfig.js';
 import dotenv from 'dotenv';
+import path from 'path';
+import url from 'url';
 
-dotenv.config();
+dotenv.config({ path: './.env' });
 
 // Connect to DB
 connectDB();   
@@ -26,7 +28,7 @@ app.use(session({
   secret: sessionSecret,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false }
+  cookie: { secure: true }
 }))
 
 // Passport middleware
@@ -44,3 +46,14 @@ app.use('/api', routes);
 app.listen(port, () => {
     console.log(`Listening on port ${port}...`)
 })
+
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static files from the frontend build folder
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+// Serve index.html for all other requests
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+});

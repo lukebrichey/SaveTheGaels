@@ -21,10 +21,12 @@ function LoginModal({ isOpen, onClose }) {
 
   const { setIsAdmin } = useAdmin();
 
+  const api_url = process.env.REACT_APP_API_URL || process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:5000/api';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
+    const response = await fetch(`${api_url}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
