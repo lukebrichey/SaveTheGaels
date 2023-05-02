@@ -11,7 +11,7 @@ import { AiFillEdit, AiFillDelete } from 'react-icons/ai';
 import { useAdmin } from '../../context/AdminContext.js';
 import { useNavigate } from 'react-router-dom';
 
-export default function Card({ blog }) {
+export default function Card({ blog, onDelete }) {
 
     const { isAdmin } = useAdmin();
     const navigate = useNavigate();
@@ -19,18 +19,6 @@ export default function Card({ blog }) {
     // Navigate to the blog page
     const handleClick = () => {
         navigate(`/blogs/${blog._id}`, { state: { blog } });
-    };
-
-    const handleDelete = async (e) => {
-            e.stopPropagation();
-            const response = await fetch(`http://localhost:5000/api/admin/${blog._id}`, {
-                method: 'DELETE',
-            });
-            if (response.ok) {
-                console.log('Blog deleted successfully');
-            } else {
-                console.error('Error deleting blog');
-            }
     };
 
     // Edit blog
@@ -70,16 +58,23 @@ export default function Card({ blog }) {
                                 icon={<AiFillEdit />} 
                                 aria-label="Edit Blog"
                                 ml="auto"             
-                                size="lg" 
+                                size="sm"
+                                colorScheme='blackAlpha'
+                                borderWidth={1}
+                                borderColor='blackAlpha.700' 
                             />
                             <IconButton
                                 icon={<AiFillDelete />}
                                 aria-label="Delete Blog"
+                                ml={2}
                                 mr={5}
-                                size="lg"
+                                size="sm"
+                                colorScheme='blackAlpha'
+                                borderWidth={1}
+                                borderColor='blackAlpha.700' 
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    handleDelete(e);
+                                    onDelete && onDelete(blog._id);
                                 }}
                             />
                         </Flex>

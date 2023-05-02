@@ -1,19 +1,34 @@
 import { useState, useEffect } from 'react';
+import { useAdmin } from '../context/AdminContext.js';
 import { VStack } from '@chakra-ui/react';
 import Card from '../components/card/Card.js';
 
 export default function Home() {
     const [blogs, setBlogs] = useState([]);
+  
+    const { isAdmin } = useAdmin();
+
+    const fetchBlogs = async () => {
+      const response = await fetch('http://localhost:5000/api/blogs');
+      const blogs = await response.json();
+      setBlogs(blogs);
+    };
 
     useEffect(() => {
-        async function fetchBlogs() {
-            const response = await fetch('http://localhost:5000/api/blogs');
-            const data = await response.json();
-            setBlogs(data);
-        }
-
-        fetchBlogs();
+      fetchBlogs();
     }, []);
+
+    const handleDelete = async (id) => {
+      const response = await fetch(`http://localhost:5000/api/admin/${id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        console.log('Blog deleted successfully');
+        fetchBlogs(); // Refetch the blogs after a delete operation
+      } else {
+        console.error('Error deleting blog');
+      }
+    };
     
     return (
         <VStack spacing={10}>
@@ -27,8 +42,9 @@ export default function Home() {
       
                 return (
                   <Card 
-                    key={blog.num} 
+                    key={blog._id} 
                     blog={blog}
+                    onDelete={isAdmin ? handleDelete : null}
                   />
                 )
               })
