@@ -49,7 +49,9 @@ export default function Home() {
               .sort((a, b) => b.num - a.num)
               .map((blog) => {
                 if (blog.hidden) {
-                  return null;
+                  if (!isAdmin) {
+                    return null;
+                  }
                 }
       
                 return (
