@@ -1,4 +1,4 @@
-import { Box, Text, Tag, HStack, VStack, Flex } from '@chakra-ui/react';
+import { Box, Text, Tag, HStack, Flex } from '@chakra-ui/react';
 import Markdown from '../markdown/Markdown.js';
 import React from 'react';
 
