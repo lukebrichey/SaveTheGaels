@@ -1,8 +1,8 @@
 import { Box, Text, Tag, HStack, VStack, Flex } from '@chakra-ui/react';
+import Markdown from '../markdown/Markdown.js';
 import React from 'react';
 
 export default function Blog({ blog }) {
-  const bodyLines = blog.body.split('\n');
 
   return (
     <Box
@@ -35,16 +35,7 @@ export default function Blog({ blog }) {
       <Text fontSize="md" color="gray.500" marginBottom="2">
         By {blog.author}
       </Text>
-      <VStack spacing={1} alignItems="flex-start">
-        {bodyLines.map((line, index) => (
-          <React.Fragment key={index}>
-            <Text key={index} fontSize="md" lineHeight="tall">
-              {line}
-            </Text>
-            {index < bodyLines.length - 1 && <br />}
-          </React.Fragment>
-        ))}
-      </VStack>
+      <Markdown source={blog.body} />
     </Box>
   );
 }
