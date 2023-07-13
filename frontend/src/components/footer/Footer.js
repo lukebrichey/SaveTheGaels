@@ -31,10 +31,10 @@ function Footer() {
     >
       <VStack spacing="2">
         <Text fontSize="sm">
-          Made by Luke Richey
+          Made by <Link href="https://lukebrichey.xyz" isExternal>Luke Richey</Link>
         </Text>
         <HStack spacing="1">
-          <Link href="https://twitter.com/LukeRichey3" isExternal>
+          <Link href="https://twitter.com/lukebrichey" isExternal>
             <IconButton
               aria-label="Twitter"
               icon={<FaTwitter />}
