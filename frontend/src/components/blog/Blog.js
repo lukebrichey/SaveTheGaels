@@ -35,7 +35,7 @@ export default function Blog({ blog }) {
       <Text fontSize="md" color="gray.500" marginBottom="2">
         By {blog.author}
       </Text>
-      <MarkdownPreview source={blog.body} />
+      <MarkdownPreview source={blog.body} linkTarget="_blank" />
     </Box>
   );
 }
