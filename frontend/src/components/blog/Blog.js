@@ -1,5 +1,5 @@
 import { Box, Text, Tag, HStack, Flex } from '@chakra-ui/react';
-import Markdown from '../markdown/Markdown.js';
+import MarkdownPreview from '@uiw/react-markdown-preview';
 import React from 'react';
 
 export default function Blog({ blog }) {
@@ -35,7 +35,7 @@ export default function Blog({ blog }) {
       <Text fontSize="md" color="gray.500" marginBottom="2">
         By {blog.author}
       </Text>
-      <Markdown source={blog.body} />
+      <MarkdownPreview source={blog.body} />
     </Box>
   );
 }
