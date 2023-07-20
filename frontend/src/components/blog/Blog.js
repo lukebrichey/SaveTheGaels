@@ -35,7 +35,14 @@ export default function Blog({ blog }) {
       <Text fontSize="md" color="gray.500" marginBottom="2">
         By {blog.author}
       </Text>
-      <MarkdownPreview source={blog.body} linkTarget="_blank" />
+      <MarkdownPreview 
+        className="markdown" 
+        source={blog.body} 
+        wrapperElement={{
+          "data-color-mode": "light"
+        }}
+        linkTarget="_blank"   
+      />
     </Box>
   );
 }
