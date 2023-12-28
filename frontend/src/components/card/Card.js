@@ -44,7 +44,7 @@ export default function Card({ blog, onDelete }) {
         >
             <CardHeader ml={6} width="100%">
                 <Flex align='center' width="100%">
-                    <Text mr={4} >#{ blog.num }</Text>
+                    { isAdmin && blog.hidden && <Text mr={4}>Draft</Text> }
                     <Text fontSize="20px" mr="auto">{ blog.title }</Text>
                     <Text mr={10} >{ blog.date }</Text>
                 </Flex>
