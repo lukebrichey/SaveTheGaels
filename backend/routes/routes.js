@@ -1,5 +1,8 @@
 import express from 'express';
 import Blog from '../models/blog.js';
+import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
+import User from '../models/user.js';
 import passport from 'passport';
 
 const router = express.Router();
@@ -44,7 +47,7 @@ router.get('/blogs/:id', (req, res) => {
 // @route POST api/admin
 // @description Create a new blog
 // @access Admin
-router.post('/admin', (req, res) => {
+router.post('/admin', passport.authenticate('jwt', { session: false }), (req, res) => {
     Blog.create(req.body)
       .then(blog => res.json({ msg: 'Blog added successfully' }))
       .catch(err => res.status(400).json({ error: 'Unable to add blog' }));
@@ -53,7 +56,7 @@ router.post('/admin', (req, res) => {
 // @route PUT api/admin
 // @description Update a previous blog
 // @access Admin
-router.put('/admin/:id', (req, res) => {
+router.put('/admin/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
   Blog.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((updatedBlog) => res.json(updatedBlog))
     .catch((err) => res.status(400).json({ error: 'Unable to update blog' }));
@@ -62,7 +65,7 @@ router.put('/admin/:id', (req, res) => {
 // @route DELETE api/admin
 // @description Delete a blog by number
 // @access Admin
-router.delete('/admin/:id', async (req, res) => {
+router.delete('/admin/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
       const blogToDelete = await Blog.findById(req.params.id);
       if (!blogToDelete) {
@@ -95,35 +98,38 @@ router.get('/isAdmin', (req, res) => {
 // @route POST api/login/
 // @description Login with username and password
 // @access Public
-router.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
-    if (err) {
-      return next(err);
-    }
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const user = await User.findOne({ username });
 
     if (!user) {
-      // Redirect to the login page on failure
-      // Should instead just add notification component to login modal
-      return res.redirect('/login');
+      return res.status(401).json({ error: 'Invalid username or password' });
     }
 
-    req.logIn(user, (err) => {
-      if (err) {
-        console.log(err);
-        return next(err);
-      }
-      
-      // Store the user ID in the session
-      req.session.userId = user._id;
+    // Validate password (use hash comparison)
+    const isMatch = crypto.timingSafeEqual(
+      Buffer.from(user.hashedPassword, 'hex'),
+      crypto.pbkdf2Sync(password, user.salt, 310000, 32, 'sha256')
+    );
 
-      // Log success message to the console
-      console.log(`User "${user.username}" successfully logged in.`);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
 
-      // Return success JSON object
-      return res.json({ message: 'Login successful', userId: user._id });
-    });
-  })(req, res, next);
+    // Generate JWT
+    const token = jwt.sign(
+      { id: user.id, username: user.username}, // Payload
+      process.env.DEVELOPMENT_SESSION_SECRET,
+      { expiresIn: '1h' } // Expiration
+    );
 
+    res.json({ message: 'Login successful', token });
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ error: 'An error occurred' });
+  }
 });
 
 // @route GET api/logout
@@ -131,13 +137,9 @@ router.post('/login', (req, res, next) => {
 // @access Private (needs to be logged in)
 router.get('/logout', (req, res) => {
   // Log the user out
-  if (req.isAuthenticated()) {
-    req.logout();
-    req.session.destroy();
-    res.json({ message: 'Logout successful' });
-  } else {
-    res.json({ message: 'No user to log out' });
-  }
+  req.logout();
+  req.session.destroy();
+  res.json({ message: 'Logout successful' });
 });
 
 

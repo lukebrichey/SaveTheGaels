@@ -35,8 +35,10 @@ function LoginModal({ isOpen, onClose }) {
       });
 
       if (response.ok) {
-        console.log(await response.json());
-        console.log("Login successful");
+        const data = await response.json();
+        console.log(data);
+        console.log(`Login successful with token stored in localStorage: ${data.token}`);
+        localStorage.setItem("token", data.token);
         setIsAdmin(true);
       } else {
         console.log("Login failed");

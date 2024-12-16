@@ -67,8 +67,11 @@ export default function Edit() {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({ ...formValues, tags: formValues.tags.split(',').map(tag => tag.trim()) }),
+      credentials: 'include',
     });
   
     if (response.ok) {

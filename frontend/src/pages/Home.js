@@ -31,6 +31,7 @@ export default function Home() {
       headers: {
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
     });
     if (response.ok) {
