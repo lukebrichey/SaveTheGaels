@@ -12,6 +12,7 @@ const router = express.Router();
 // @access Public
 router.get('/blogs', (req, res) => {
     Blog.find({})
+      .sort({ date: -1 })
       .then(blogs => res.json(blogs))
       .catch(err => res.status(400).json({ error: 'Unable to render blog posts' }))
 })
@@ -20,7 +21,7 @@ router.get('/blogs', (req, res) => {
 // @description Get the latest blog
 // @access Public
 router.get('/blogs/latest', (req, res) => {
-  Blog.findOne().sort({ num: -1 })
+  Blog.findOne().sort({ date: -1 })
       .then(blog => {
           if (blog) {
               res.json(blog);

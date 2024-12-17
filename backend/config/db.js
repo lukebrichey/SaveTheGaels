@@ -16,5 +16,11 @@ const connectDB = async () => {
       process.exit(1);
     }
   };
+
+  const disconnectDB = async () => {
+    await mongoose.disconnect();
+    console.log("MongoDB Disconnected...");
+};
   
   export default connectDB
+  export { disconnectDB };

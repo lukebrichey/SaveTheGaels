@@ -6,7 +6,7 @@ const blogSchema = new mongoose.Schema({
     body: String,
     description: String,
     tags: Array,
-    date: { type: String, default: () => new Date(Date.now()).toLocaleDateString() },
+    date: { type: String, default: () => new Date(Date.now()).toLocaleDateString(), index: true},
     hidden: { type: Boolean, default: false },
     num: Number
 });
